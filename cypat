@@ -62,7 +62,7 @@ read input
 
 if [[ "$input" == "yes" ]]; then
 	echo "changing passwords..."
-	# chpasswd < /password
+	chpasswd < /password
 	echo "done"
 else
 echo "no passwords changed"
@@ -75,7 +75,7 @@ echo "Start system update?"
 read input
 if [[ "$input" == "yes" ]]; then
 	apt-get update
-		apt-get upgrade
+	apt-get upgrade
 
 fi
 echo '------------------------'
@@ -88,33 +88,33 @@ ufw enable
 # turn off root login ssh
 echo 'in /etc/ssh/sshd_config'
 echo 'turning off root login for SSH'
-sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' test
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 
 # password expiration policies
 
 echo 'in /etc/login.defs'
 echo 'setting password expiration max to 90'
-sed -i '/PASS_MAX_DAYS/c\PASS_MAX_DAYS 90' test
+sed -i '/PASS_MAX_DAYS/c\PASS_MAX_DAYS 90' /etc/login.defs
 
 echo 'setting password expiration minimum to 7'
-sed -i '/PASS_MIN_DAYS/c\PASS_MIN_DAYS 7' test
+sed -i '/PASS_MIN_DAYS/c\PASS_MIN_DAYS 7' /etc/login.defs
 
 echo 'setting password expiration warning to 14'
-sed -i '/PASS_WARN_AGE/c\PASS_WARN_AGE 14' test
+sed -i '/PASS_WARN_AGE/c\PASS_WARN_AGE 14' /etc/login.defs
 
 echo 'in /etc/pam.d/common-password'
 echo 'setting minimum length in common-password'
 echo 'setting remember in common-password'
-sed -i '/pam_unix.so/s/$/ minlen=8 remember=5/' test
+sed -i '/pam_unix.so/s/$/ minlen=8 remember=5/' /etc/pam.d/common-password
 
 # enabling syncookies
 
 echo 'in /etc/sysctl.conf'
 echo 'enabling syncookies'
-sed -i '/net.ipv4.tcp_syncookies=0/c\net.ipv4.tcp_syncookies=1'
+sed -i '/net.ipv4.tcp_syncookies=0/c\net.ipv4.tcp_syncookies=1' /etc/sysctl.conf
 
 # common-auth nullok remove that shit
 
 echo 'in /etc/pam.d/common-auth'
 echo 'setting null passwords to not authenticate'
-sed 's/nullok//g' test
+sed 's/nullok//g' /etc/pam.d/common-auth
